@@ -1,2 +1,5 @@
 *.bbl
 *.synctex.gz
+/data/
+/papers/
+/notes/
