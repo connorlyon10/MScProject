@@ -1,5 +1,7 @@
+.vscode
+.venv
 *.bbl
 *.synctex.gz
-/data/
-/papers/
-/notes/
+data
+papers
+notes

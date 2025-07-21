@@ -1,0 +1,17 @@
+This literature review addresses the problem of real-time speaker counting in mono, overlapped, real-world audio. The aim is to identify existing solutions, highlight limitations, and position the proposed work within current research.
+
+Overlapping speech presents a major challenge in speech processing tasks such as diarisation and transcription. Accurate speaker counting is critical in environments with variable overlap densities, from no overlap to full concurrency.
+
+Speaker counting approaches vary between offline and real-time methods. Models have included convolutional neural networks, recurrent networks, convolutional-recurrent hybrids, and transformer-based architectures. Most focus on offline processing.
+
+Many existing systems rely on multi-channel or far-field microphone setups. Mono input, while limited, is more realistic in consumer and embedded settings. The constraint forces models to learn from time-frequency patterns without spatial cues.
+
+Available datasets include LibriCSS, LibriMix, AMI, and others. These offer varying degrees of realism, overlap control, and microphone configuration. Most do not target mono, real-time inference with realistic acoustic conditions.
+
+Prior work has focused on speaker counting using complex pipelines or multi-mic setups. Some explore CNNs on spectrograms for speaker activity detection. Others propose recurrent or CRN-based methods. Few operate on mono, single-segment audio in a truly real-time context.
+
+There is a clear gap in models designed for mono input with low-latency inference on real-world audio containing dynamic overlap. No current approach targets all of these constraints simultaneously.
+
+Applications include live meeting transcription, input to diarisation systems, or deployment on constrained hardware. These scenarios benefit from compact, accurate, and low-latency models.
+
+This work proposes a lightweight, mono-input model capable of real-time inference across varied overlap densities, addressing a critical gap in current literature.

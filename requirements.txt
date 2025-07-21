@@ -1,0 +1,14 @@
+numpy
+pandas
+matplotlib
+torch
+torchaudio
+torchvision
+pytorch-lightning
+pydub
+soundfile
+tqdm
+IPython
+huggingface_hub
+librosa
+ipykernel
