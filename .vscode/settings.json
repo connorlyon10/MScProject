@@ -1,3 +1,8 @@
 {
-    "jupyter.notebookFileRoot": "${workspaceFolder}/cxb1114"
+    "jupyter.notebookFileRoot": "${workspaceFolder}/cxb1114",
+
+    "[latex]": {
+  "editor.wordWrap": "on"
+    }
+
 }

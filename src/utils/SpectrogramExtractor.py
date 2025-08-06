@@ -1,6 +1,3 @@
-
-
-
 # Extracts a spectrogram from an audio file
 import torchaudio
 import torchaudio.transforms as T

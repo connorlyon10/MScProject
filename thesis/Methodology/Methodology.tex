@@ -1,0 +1,72 @@
+% !TEX root =  ../Dissertation.tex
+
+\chapter{Methodology}
+The Methodology covers the process for training the Speaker Count CNN and pushing the model to production. First the data collection process is described, followed by the pre-processing required to create the supervised data set of fixed duration voice clips, their spectrograms and the supervision labels. Next, the model architecture is described. Once the architecture was defined and the dataset was prepared, hyperparameter tuning was done with Optuna to find the optimal model hyperparameters, including the number of convolutional layers, skip-connections, optimiser and kernel size. Finally, the method is given for sending the model to a production environment, and how the model was prepared for usage in real-time.
+
+\section{Data Collection}
+The dataset selected for model training, testing and validation is LibriCSS (cite), a corpus specifically designed to evaluate continuous speech separation systems. LibriCSS is a re-recorded and modified version of the LibriSpeech (cite) dataset. LibriCSS was created by playing LibriSpeech audio through speakers in a real room and recording playback through multiple channels. This means that LibriCSS captures real-world distortion in its data, which is crucial for a robust model post-production. LibriCSS contains ~10 hours of speech from 682 distinct speakers, concatenated at various levels of overlap (Table~\ref{tab:LibriCSS}). This overlapping structure and multi-channel nature makes LibriCSS particularly suitable for training a speaker counting model in realistic acoustic conditions. Additionally, LibriCSS is available via the MIT license; it's possible to download, manipulate, and use the dataset freely.
+
+\begin{table}[H]
+  \centering
+  \caption{The types of audio present in LibriCSS (cite). Training a model on all 6 levels of overlap gave the best generalisation.}
+  \label{tab:LibriCSS}
+  \begin{tabular}{|l|c|}
+    \hline
+    \textbf{Audio Type} & \textbf{Meaning} \\
+    \hline
+    0L (zero-long) & No overlap, inter-utterance gap of ~3 seconds. \\
+    \hline
+    0S (zero-short) & No overlap, inter-utterance gap of ~0.5 seconds. \\
+    \hline
+    OV10 (overlap-10) & ~10\% overlap on utterances. \\
+    \hline
+    OV20 (overlap-20) & ~20\% overlap on utterances. \\
+    \hline
+    OV30 (overlap-30) & ~30\% overlap on utterances. \\
+    \hline
+    OV40 (overlap-40) & ~40\% overlap on utterances. \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\section{Data Pre-Processing}
+- flattened into mono
+- show file structure?
+- for each raw_recording.wav, split into one second clips. This creates a huge set of clips (36000? 60000?)
+- turn each clip into a spectrogram. Because the clips are of fixed size, the spectrograms are also of fixed size.
+- pull the labels from meeting_info.
+-create the csv by pairing each spectrogram with the number of speakers and speaker_ids.
+- create the augmented data by randomly pulling two clips, check the speakers aren't the same using speaker_id, then overlay and flatten them.
+- create the augmented spectrograms on the new clips.
+-final dataset of spectrograms and labels.
+
+
+
+How Mono Input Ties Into This
+Your CNN only receives mono inputs, so had to flattening spatially rich data into a single-channel stream. This mimics deployment settings
+
+Although LibriCSS is recorded using multiple microphones to simulate spatially rich audio scenes, our speaker count model accepts only mono input. This flattening of spatial information reflects real-world constraints, where predictions must be made from single-channel audio. By training on spatially recorded but mono-processed data, the model learns to infer speaker counts robustly—even without access to spatial cues.
+
+
+
+before stratification [73, 2520, 23451, 8014, 709, 0]
+after stratification []
+
+
+\textbf{seperate each speaker count into its own list. Add combinations of each in order to maintain balance, e.g. 0+1 = 1, 1+1=2, 1+2=3, 2+2=4. --> 0+1 = 1, 0+2 = 2, 1+1+1 = 3, 2+1+1 = 4. There are different ways to get each class, just cycle through 1-4 iteratively to keep each class equal. Just do it with the csv at first! create a wrapper for this called test_... that outputs the class balance list like above.}
+
+\section{Model Architecture}
+- Model Architecture (Initial + Final)
+- Start by presenting the initial model design and rationale (e.g., “A CNN-based architecture was selected due to its efficiency with spectrogram inputs and low-latency characteristics…”).
+- Mention any limitations or motivations for change (“Initial trials showed poor gradient flow across deep layers…”).
+- Then describe the final architecture, post-tuning—almost like the “resulting model structure.”
+This lets the reader understand how hyperparameters influenced structure (e.g., changes in layer depth, activations, etc.).
+
+\section{Hyperparameter Tuning with Optuna}
+- Introduce your tuning strategies (grid/manual/Bayesian), validation metrics, and how they guided architectural evolution.
+- Justify any structural changes made during tuning.
+- Emphasize how tuning impacted performance (e.g., loss plateauing resolved via learning rate schedules and skip connections).
+
+explain what Optuna is! Why I chose it! Suggest it was found in the lit review!
+\section{Preparing the Model for Real-Time Evaluation}
+\section{Pushing the Model to Production}
