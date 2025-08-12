@@ -5,7 +5,7 @@ from pathlib import Path
 import re
 
 from src.utils.SpectrogramExtractor import SpectrogramExtractor
-from src.model.model import ConvCount, config
+from src.model import ConvCount, config
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 

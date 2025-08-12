@@ -3,6 +3,7 @@ ipywidgets
 numpy
 pandas
 matplotlib
+seaborn
 torch
 torchaudio
 torchvision
@@ -14,3 +15,5 @@ IPython
 huggingface_hub
 librosa
 optuna
+streamlit
+sounddevice

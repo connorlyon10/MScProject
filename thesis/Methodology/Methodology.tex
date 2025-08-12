@@ -4,7 +4,7 @@
 The Methodology covers the process for training the Speaker Count CNN and pushing the model to production. First the data collection process is described, followed by the pre-processing required to create the supervised data set of fixed duration voice clips, their spectrograms and the supervision labels. Next, the model architecture is described. Once the architecture was defined and the dataset was prepared, hyperparameter tuning was done with Optuna to find the optimal model hyperparameters, including the number of convolutional layers, skip-connections, optimiser and kernel size. Finally, the method is given for sending the model to a production environment, and how the model was prepared for usage in real-time.
 
 \section{Data Collection}
-The dataset selected for model training, testing and validation is LibriCSS (cite), a corpus specifically designed to evaluate continuous speech separation systems. LibriCSS is a re-recorded and modified version of the LibriSpeech (cite) dataset. LibriCSS was created by playing LibriSpeech audio through speakers in a real room and recording playback through multiple channels. This means that LibriCSS captures real-world distortion in its data, which is crucial for a robust model post-production. LibriCSS contains ~10 hours of speech from 682 distinct speakers, concatenated at various levels of overlap (Table~\ref{tab:LibriCSS}). This overlapping structure and multi-channel nature makes LibriCSS particularly suitable for training a speaker counting model in realistic acoustic conditions. Additionally, LibriCSS is available via the MIT license; it's possible to download, manipulate, and use the dataset freely.
+The primary dataset selected for model training, testing and validation was LibriCSS (cite), a corpus specifically designed to evaluate continuous speech separation systems. LibriCSS is a re-recorded and modified version of the LibriSpeech (cite) dataset; LibriCSS was created by playing LibriSpeech audio through speakers in a real room and recording playback via 7 channels. This means that LibriCSS captures real spatial distortion in its data. LibriCSS contains ~10 hours of speech from 682 distinct speakers, concatenated at various levels of overlap (Table~\ref{tab:LibriCSS}). This overlapping structure and multi-channel nature makes LibriCSS particularly suitable for training a speaker counting model in realistic acoustic conditions. LibriCSS is available via the MIT license.
 
 \begin{table}[H]
   \centering
@@ -29,7 +29,17 @@ The dataset selected for model training, testing and validation is LibriCSS (cit
   \end{tabular}
 \end{table}
 
+LibriCSS provided audio samples with $n = 0, 1, 2$ speakers, and augmentation (Section \textbf{?}) created samples of higher speaker counts $n = 3$ and $n = 4+$. To also provide more 0 speaker samples The Room Impulse Response and Noise Database (RIR&N) (cite) was added to the training set. ~45 minutes of noisy audio was added to the LibriCSS data. Examples of added noise include various types of static or sounds from a busy environment. \textbf{add stats: how many samples added?}
+
+Finally, the author recorded their own 'noise' data to add further no-speaker samples to the dataset. The clips were of different length, times of day and location to provide some variation in the 'noise'. Recordings were often made by an open window to introduce further variety. ~125 minutes of audio was recorded and added to complete the data collection process.
+
+
 \section{Data Pre-Processing}
+
+
+
+
+
 - flattened into mono
 - show file structure?
 - for each raw_recording.wav, split into one second clips. This creates a huge set of clips (36000? 60000?)

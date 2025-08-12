@@ -15,7 +15,7 @@ config = {
     'conv4_out': 64,
     'input_height': 96,
     'input_width': 64,
-    'num_classes': 6
+    'num_classes': 5
 }
 
 
@@ -33,7 +33,7 @@ class ConvCount(nn.Module):
                  dropout_prob,
                  input_height=96,               # refers to spectrogram image height
                  input_width=64,                # refers to spectrogram image width
-                 num_classes=6,                 # 0-5 = 6 classes
+                 num_classes=5,                 # 0-4+ = 5 classes
                  **kwargs):                     # kwargs isn't accessed but catches config errors
         super(ConvCount, self).__init__()
 
