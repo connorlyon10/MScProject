@@ -1,7 +1,49 @@
+# Environment
 .vscode
 .venv
+
+
+
+# Aux files
 *.bbl
 *.synctex.gz
-data
-papers
-notes
+__pycache__/
+
+
+# LaTeX source
+thesis/*
+!thesis/Dissertation.pdf
+
+
+
+# Dataset
+data/libricss/*
+data/clips_libricss/*
+data/specs_libricss/*
+
+data/rirs_noises/*
+data/clips_rir/*
+data/specs_rir/*
+
+data/author_data/*
+
+data/clips_aug/*
+data/specs_aug/*
+
+
+
+# git doesn't track empty folders, so we add a dummy file '.gitkeep' to keep the dataset folders in the repo.
+!data/libricss/.gitkeep
+!data/clips_libricss/.gitkeep
+!data/specs_libricss/.gitkeep
+
+!data/rirs_noises/.gitkeep
+!data/clips_rir/.gitkeep
+!data/specs_rir/.gitkeep
+
+!data/author_data/.gitkeep
+
+!data/clips_aug/.gitkeep
+!data/specs_aug/.gitkeep
+
+

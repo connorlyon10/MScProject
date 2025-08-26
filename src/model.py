@@ -4,31 +4,27 @@ import torch.nn.functional as F
 
 
 
-# Model config
+# Model config - see Optuna results in `notebooks\HPTuning.ipynb`
 config = {
     'lr': 0.001,
     'dropout_prob': 0.3,
     'fc_hidden': 128,
-    'conv1_out': 32,
-    'conv2_out': 16,
-    'conv3_out': 64,
-    'conv4_out': 64,
-    'input_height': 96,
-    'input_width': 64,
+    'conv1_out': 8,
+    'conv2_out': 32,
+    'conv3_out': 128,
+    'conv4_out': 128,
     'num_classes': 5
 }
 
-# Model config without 0 class
+# Same as above with no 0 class
 config_postVAD = {
     'lr': 0.001,
     'dropout_prob': 0.3,
     'fc_hidden': 128,
-    'conv1_out': 32,
-    'conv2_out': 16,
-    'conv3_out': 64,
-    'conv4_out': 64,
-    'input_height': 96,
-    'input_width': 64,
+    'conv1_out': 8,
+    'conv2_out': 32,
+    'conv3_out': 128,
+    'conv4_out': 128,
     'num_classes': 4
 }
 
@@ -46,7 +42,7 @@ class ConvCount(nn.Module):
                  fc_hidden,
                  dropout_prob,
                  input_height=64,               # refers to spectrogram image height
-                 input_width=96,                # refers to spectrogram image width
+                 input_width=101,                # refers to spectrogram image width
                  num_classes=5,                 # 0-4+ = 5 classes by default
                  **kwargs):                     # kwargs isn't accessed but catches config errors
         super(ConvCount, self).__init__()
@@ -98,9 +94,9 @@ class ConvCount(nn.Module):
 
 
 
-
+# Found with the same HP tuning process as in  `notebooks\HPTuning.ipynb`
 config_VAD = {
-    'lr': 0.0005,
+    'lr': 0.001,
     'dropout_prob': 0.2,
     'fc_hidden': 64,
     'conv1_out': 32,
