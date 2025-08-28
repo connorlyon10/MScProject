@@ -6,26 +6,33 @@
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{toc}{\contentsline {section}{\numberline {1.1}Data Collection}{1}{}\protected@file@percent }
+\newlabel{sec:data_col}{{1.1}{1}{}{section.1.1}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {1.1}{\ignorespaces The types of audio present in LibriCSS \cite  {libricss}.}}{1}{}\protected@file@percent }
 \newlabel{tab:LibriCSS}{{1.1}{1}{}{table.1.1}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {1.2}{\ignorespaces A description of each audio file added by the author. Different noise levels and sources were incorporated to give the greatest possible variance in the data.}}{1}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1.2}{\ignorespaces A description of each manually recorded audio file. Different noise levels and sources were incorporated to give the greatest possible variance in the data.}}{1}{}\protected@file@percent }
 \newlabel{tab:authordata}{{1.2}{1}{}{table.1.2}{}}
 \citation{libricss}
 \@writefile{lot}{\contentsline {table}{\numberline {1.3}{\ignorespaces The amount of audio collected from each source.}}{2}{}\protected@file@percent }
 \newlabel{tab:datacollection}{{1.3}{2}{}{table.1.3}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {1.2}Data Pre-Processing}{2}{}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {1.1}{\ignorespaces A series of spectrograms created with the \lstinline !SpectrogramExtractor()! class on speech audio. Speaker count was found by manually cross-referencing the audio metadata. It's clear that activity increases with speaker count. With a low number of speakers ($n = 1, 2$) the spectral patterns of each speaker are visible, whereas the result becomes increasingly obscure and noisy as speaker count increases. This suggests that learnability diverges as $n$ increases.}}{3}{}\protected@file@percent }
+\newlabel{sec:data_preproc}{{1.2}{2}{}{section.1.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1.1}{\ignorespaces A series of spectrograms created with the \lstinline !SpectrogramExtractor()! class on speech audio. Speaker count was found by manually cross-referencing the audio metadata. It's clear that spectral activity increases with speaker count. With a low number of speakers ($n = 1, 2$) the spectral patterns of each speaker are visible, whereas the result becomes increasingly obscure and noisy as speaker count increases. This suggests that learnability diverges as $n$ increases.}}{3}{}\protected@file@percent }
 \newlabel{fig:spec_samples}{{1.1}{3}{}{figure.1.1}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {1.4}{\ignorespaces An extract of the resulting dataset from using the LibriCSS metadata (Appendix~\ref {app:libricss_metadata}) to find the number of speakers for each observation.}}{4}{}\protected@file@percent }
 \newlabel{tab:libricss_labels}{{1.4}{4}{}{table.1.4}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {1.5}{\ignorespaces Number of samples per speaker count before augmentation. The distribution is highly imbalanced, which risks biasing the model towards majority classes.}}{4}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{Evaluating the Dataset}{4}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1.5}{\ignorespaces Number of samples per speaker count before augmentation.}}{4}{}\protected@file@percent }
 \newlabel{tab:samples_pre_aug}{{1.5}{4}{}{table.1.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.2.1}Data Augmentation}{4}{}\protected@file@percent }
 \citation{modelsizes}
+\newlabel{tab:VAD_data_change}{{1.2.1}{5}{}{table.1.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1.8}{\ignorespaces A comparison of the label structure for the Speaker Counting model and the Voice Activity Detection (VAD) model.}}{5}{}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {1.6}{\ignorespaces Summary of data augmentation for multi-speaker classes. The original dataset was split into `0-speaker', `1-speaker' and `2-speaker' samples. These could then be overlayed to create a clip with any number of speakers; for example, overlaying `2-speaker' clips with `1-speaker' clips produced synthetic `3-speaker' clips.}}{5}{}\protected@file@percent }
 \newlabel{tab:augmentation_summary}{{1.6}{5}{}{table.1.6}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {1.7}{\ignorespaces Number of samples per speaker count after augmentation. These class sizes were curated to reflect both the difficulty of the class to learn and it's occurrence in the world. For example, the `0' class, where observations are only silence and noise, was theoretically easier to learn than the higher classes, so less observations were needed. In contrast the `1' speaker class is the most common class in the real-world, so there are more observations for this class than the others. With this in mind, a strategically weighted dataset was created.}}{5}{}\protected@file@percent }
 \newlabel{tab:samples_aug}{{1.7}{5}{}{table.1.7}{}}
+\@writefile{toc}{\contentsline {subsubsection}{Changes for the Voice Activity Detection (VAD) task}{5}{}\protected@file@percent }
+\newlabel{sec:vad_labels}{{1.2.1}{5}{}{table.1.7}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {1.3}Model Architecture}{5}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {1.3.1}Architecture for the Voice Activity Detection (VAD) model}{5}{}\protected@file@percent }
 \newlabel{fig:VAD_tikz}{{1.3.1}{6}{}{subsection.1.3.1}{}}
@@ -36,13 +43,16 @@
 \@writefile{lof}{\contentsline {figure}{\numberline {1.3}{\ignorespaces CNN architecture for the speaker count model. An input spectrogram is fed through four convolutional layers with $3\times 3$ kernels, applying $2\times 2$ max pooling after each. In comparison to Figure~\ref {fig:vad_model_tikz} the resulting feature maps are much smaller in spatial resolution but richer in representational detail. The feature maps are flattened into a column vector $z$ and learned by two fully-connected layers with $n=128$ nodes each. The output is a multi-class classification of how many distinct speakers are present in the audio.}}{6}{}\protected@file@percent }
 \newlabel{fig:count_model_tikz}{{1.3}{6}{}{figure.1.3}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {1.4}Hyperparameter Tuning with Optuna}{6}{}\protected@file@percent }
+\newlabel{sec:Optuna}{{1.4}{6}{}{section.1.4}{}}
 \citation{optuna_2019}
+\citation{adam}
 \citation{streamlit}
 \citation{sounddevice}
-\@writefile{lot}{\contentsline {table}{\numberline {1.8}{\ignorespaces HP search space for the Speaker Count model's random search. These values were drawn from intuition and intentionally cover a very large parameter space.}}{7}{}\protected@file@percent }
-\newlabel{tab:hparam_space}{{1.8}{7}{}{table.1.8}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {1.9}{\ignorespaces Hyperparameter search space explored by Optuna for the Speaker Count model. The space was informed by the previous random search, for example setting fully-connected layer size of $128$, as it was a strong performer in the random search. There were 324 total possible configurations, but it wasn't deemed necessary to try all configurations; most configurations provided insignificant changes, and a near-optimal configuration was considered sufficient.}}{7}{}\protected@file@percent }
-\newlabel{tab:optuna_space}{{1.9}{7}{}{table.1.9}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1.9}{\ignorespaces HP search space for the Speaker Count model's random search. These values were drawn from intuition and intentionally cover a very large parameter space.}}{7}{}\protected@file@percent }
+\newlabel{tab:hparam_space}{{1.9}{7}{}{table.1.9}{}}
+\newlabel{tab:optuna_search_space}{{1.4}{7}{}{table.1.9}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1.10}{\ignorespaces Hyperparameter search space explored by Optuna for the Speaker Count model. The space was informed by the previous random search, for example setting fully-connected layer size of $128$, as it was a strong performer in the random search. There were 324 total possible configurations, but it wasn't deemed necessary to try all configurations; most configurations provided insignificant changes, and a near-optimal configuration was considered sufficient.}}{7}{}\protected@file@percent }
+\newlabel{tab:optuna_space}{{1.10}{7}{}{table.1.10}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {1.5}Real-Time Evaluation with Streamlit}{7}{}\protected@file@percent }
 \@setckpt{Methodology/Methodology}{
 \setcounter{page}{9}
@@ -61,7 +71,7 @@
 \setcounter{paragraph}{0}
 \setcounter{subparagraph}{0}
 \setcounter{figure}{3}
-\setcounter{table}{9}
+\setcounter{table}{10}
 \setcounter{parentequation}{0}
 \setcounter{float@type}{32}
 \setcounter{algorithm}{0}
@@ -69,6 +79,10 @@
 \setcounter{ALC@line}{0}
 \setcounter{ALC@rem}{0}
 \setcounter{ALC@depth}{0}
+\setcounter{subfigure}{0}
+\setcounter{lofdepth}{1}
+\setcounter{subtable}{0}
+\setcounter{lotdepth}{1}
 \setcounter{FancyVerbLine}{0}
 \setcounter{linenumber}{1}
 \setcounter{LN@truepage}{8}
