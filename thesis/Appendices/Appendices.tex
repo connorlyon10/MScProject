@@ -1,3 +1,12 @@
+\chapter{Spectrogram Example}
+\label{app:bat_spec}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{figs/Intro&Review/bat.png}
+\caption{A spectrogram of a bat's echolocation \cite{bat_echolocation_jones}. Spectrograms encode temporal and frequency information simultaneously, making them well-suited for CNN-based feature extraction.}
+\end{figure}
+
+
 \chapter{LibriCSS Metadata}
 \label{app:libricss_metadata}
 
@@ -91,7 +100,54 @@
 \multicolumn{3}{|l|}{Estimated Total Size (MB)}       & 5.12 \\
 \hline
 \end{tabular}
-\caption{Summary of the Speaker Counting CNN. At 0.6M parameters the model is very compact relative to modern deep networks \cite{modelsizes}. Despite being more architecturally complex, this model is smaller than the VAD model; the four convolutional layers provide a much higher compression rate. Most of the computation is done in the convolutional layers to maximise the extraction of hierarchical features. \newline \newline \textbf{*}The main model contains 5 classes, [0,1,2,3,4+]; an additional `post-VAD' model was made with 4 classes, [1,2,3,4+]. The post-VAD model assumes speech in the audio. The post-VAD model wasn't significantly different to this model.}
+\caption{Summary of the Speaker Counting CNN. At 0.6M parameters the model is very compact relative to modern deep networks \cite{modelsizes}. Despite being more architecturally complex, this model is smaller than the VAD model; the four convolutional layers provide a much higher compression rate. Most of the computation is done in the convolutional layers to maximise the extraction of hierarchical features.
+\noindent \textbf{*}The main model contains 5 classes, [0,1,2,3,4+]; an additional `post-VAD' model was made with 4 classes, [1,2,3,4+]. The post-VAD model assumes speech in the audio. The post-VAD model wasn't significantly different to this model.}
 \end{table}
 
 %---------------------------------------------------------------------------------------------------------
+\chapter{GitLab Structure}
+\begin{figure}[H]
+\centering
+\begin{verbatim}
+cxb1114/
+|-- data/
+|   |-- data.wav
+|   `-- ...
+|
+|-- notebooks/
+|   |-- DataWrangling.ipynb
+|   |-- HPTuning.ipynb
+|   |-- ModelTraining1_5Class.ipynb
+|   |-- ModelTraining2_4Class.ipynb
+|   |-- ModelTraining3_VAD.ipynb
+|   `-- Visuals.ipynb
+|
+|-- src/
+|   |-- app.py
+|   |-- app_VAD.py
+|   |-- data.py
+|   |-- model.py
+|   |-- predict.py
+|   |
+|   |-- utils/
+|   |   |-- helpers.py
+|   |   `-- SpectrogramExtractor.py
+|   |
+|   `-- model/
+|       `-- models.pt
+|       `-- ...
+|
+|-- thesis/
+|   `-- dissertation.pdf
+|
+|-- demo.pptx
+`-- requirements.txt
+
+
+\end{verbatim}
+\caption{The project repository structure.}
+\end{figure}
+
+Some notes on the repository contents: `\textbf{data/}' is empty because it's too large to store in a repository. `\textbf{notebooks/}' contains all results from practical work, while `\textbf{src/}' contains helper functions, model classes, configs and the real-time apps. `\textbf{src/model/}' contains the model weights.\newline
+
+\noindent A full description and set-up can be found in the readme.
