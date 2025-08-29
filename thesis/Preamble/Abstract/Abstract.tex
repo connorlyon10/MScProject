@@ -1,11 +1,8 @@
 
-\chapter*{Abstract}
+\begin{abstract}
+Voice activity detection (VAD) and speaker counting are critical upstream components of speech processing pipelines, enabling downstream tasks such as speaker identification and transcription to operate effectively. Conventional state-of-the-art approaches rely on transformer or recurrent architectures and multi-channel audio, which achieve state-of-the-art (SOTA) accuracy but are unsuitable for real-time deployment on resource-constrained devices due to slow inference and unrealistic training data.\newline
 
-This is the abstract\dots
+\noindent This paper investigates convolutional neural network (CNN) based models as lightweight alternatives for mono-channel spectrogram-based input. Each model was trained on a combined dataset incorporating LibriCSS speech and noise samples from various sources. Experiments were designed to evaluate performance in a real-world environment, with noise and latency constraints considered.\newline
 
-
-
-
-
-
-this is still the abstract\dots
+\noindent Results demonstrate that compact CNN-based models easily solve VAD, reaching 99.5\% accuracy in validation and generalising with low latency in real-time deployment. For speaker counting, performance reached 65\% accuracy on validation data, indicating that CNNs remain viable but also that larger or hybrid architectures may be necessary as task complexity increases. These findings highlight that CNN-based models are effective for speech processing classification tasks. As a result, overly complex models and datasets may become redundant as industry drives for models that thrive in production, not in development. This work uses speech processing tasks to demonstrate the importance of aligning model and dataset design with task requirements. This addresses a key gap in existing research, where models and datasets are often `perfect', yet fail when deployed in the real world.
+\end{abstract}
