@@ -5,7 +5,7 @@
 
 \section{Data Collection}
 \label{sec:data_col}
-The primary dataset used for model training was LibriCSS \cite{libricss}, a corpus designed to evaluate continuous speech separation systems. The corpus comprises over ten hours of speech from 682 distinct speakers, in clips with varying levels of overlap (Table~\ref{tab:LibriCSS}). Given its overlapping structure and multi-channel recordings, LibriCSS provides a suitable foundation for training a speaker-counting model under pseudo-realistic acoustic conditions.
+The primary dataset used for model training was LibriCSS \cite{libricss}, a corpus designed to evaluate continuous speech separation systems. It comprises over ten hours of speech from 682 distinct speakers, in clips with varying levels of overlap (Table~\ref{tab:LibriCSS}). Given its overlapping structure and multi-channel recordings, LibriCSS provides a suitable foundation for training a speaker-counting model under pseudo-realistic acoustic conditions.
 
 \begin{table}[H]
   \centering
@@ -30,7 +30,7 @@ The primary dataset used for model training was LibriCSS \cite{libricss}, a corp
   \end{tabular}
 \end{table}
 
-As the majority of LibriCSS samples contain overlapping speech, the dataset provided an insufficient number of zero-speaker `noise' samples. To address this imbalance the Room Impulse Response and Noise (RIR\&N) database \cite{RoomImpulseResponseDatabase} was incorporated into the training set. RIR\&N contains approximately 45 minutes of non-speech audio, including white noise, reverberation, and ambient recordings. In addition, supplementary noise clips were recorded to further expand the zero-speaker class. These recordings were collected under varied conditions to capture a broader range of acoustic characteristics (Table~\ref{tab:authordata}), resulting in approximately 125 minutes of new data. In total the combined corpus amounted to roughly 13 hours of audio for pre-processing (Table~\ref{tab:datacollection}).
+\noindent As the majority of LibriCSS samples contain overlapping speech, the dataset provided an insufficient number of zero-speaker `noise' samples. To address this imbalance the Room Impulse Response and Noise (RIR\&N) database \cite{RoomImpulseResponseDatabase} was incorporated into the training set. RIR\&N contains approximately 45 minutes of non-speech audio, including white noise, reverberation, and ambient recordings. In addition, supplementary noise clips were recorded to further expand the zero-speaker class. These recordings were collected under varied conditions to capture a broader range of acoustic characteristics (Table~\ref{tab:authordata}), resulting in approximately 125 minutes of new data. In total the combined dataset amounted to roughly 13 hours of audio for pre-processing (Table~\ref{tab:datacollection}).
 
 
 \begin{table}[H]
@@ -78,20 +78,20 @@ As the majority of LibriCSS samples contain overlapping speech, the dataset prov
 
 \section{Data Pre-Processing}
 \label{sec:data_preproc}
-Each recording was downmixed to a single channel (mono) to emulate the conditions of a single-microphone recording. While this increased the difficulty of the learning task, it enhanced the model's applicability to real-world scenarios where multi-microphone arrays are typically unavailable. The LibriCSS corpus was originally captured using a seven-channel setup \cite{libricss}, providing rich spatial information that facilitates separation and recognition; such configurations are impractical in real-world applications.
+Each recording was downmixed to a single channel (mono) to emulate the conditions of a single-channel recording. While this increased the difficulty of the learning task, it enhanced the model's applicability to real-world scenarios where multi-microphone arrays are typically unavailable. The LibriCSS corpus was originally captured using a seven-channel setup \cite{libricss}, providing rich spatial information that facilitates separation and recognition; such configurations are impractical in real-world applications.\newline
 
-Following downmixing, the audio was segmented into fixed-length clips of one second. The use of a consistent clip duration was necessary to standardise input lengths for the neural network, ensuring comparability across samples and maximising learnability. A duration of one second was selected as it provided sufficient temporal context for distinguishing between speakers whilst also maintaining a manageable input size for efficient training and inference.
+\noindent Following downmixing, the audio was segmented into fixed-length clips of one second and a sample rate of 16,000Hz. The use of a consistent clip duration and sample rate was necessary to standardise input lengths for the neural network, ensuring comparability across samples and maximising learnability. This duration and rate was selected as it provided sufficient temporal context for distinguishing between speakers whilst also maintaining a manageable input size for efficient training and inference.
 
 \begin{figure}[H]
   \centering
   \includegraphics[scale=0.75]{figs/Methodology/SpectrogramExample.png}
-  \caption{A series of spectrograms created with the \lstinline!SpectrogramExtractor()! class on speech audio. Speaker count was found by manually cross-referencing the audio metadata. It's clear that spectral activity increases with speaker count. With a low number of speakers ($n = 1, 2$) the spectral patterns of each speaker are visible, whereas the result becomes increasingly obscure and noisy as speaker count increases. This suggests that learnability diverges as $n$ increases.}
+  \caption{A series of spectrograms created with the \lstinline!SpectrogramExtractor()! class on speech audio. Speaker count was found by manually cross-referencing the audio's source metadata (Appendix \ref{app:libricss_metadata}). Spectral activity appears to increase with speaker count. With a low number of speakers ($n = 1, 2$) the spectral patterns of each speaker are visible, including higher multiple harmonics, whereas the result becomes increasingly obscure and noisy as speaker count increases. This suggests that learnability diverges as $n$ increases.}
   \label{fig:spec_samples}
 \end{figure}
 
-To create the training samples, a custom pre-processing class \lstinline!SpectrogramExtractor()! was implemented. This class transforms an audio clip into its corresponding spectrogram representation, which stores frequency, amplitude and temporal information in a single sample. By converting the signal into the time-frequency domain, the resulting spectrograms are learnable based on their . The \lstinline!SpectrogramExtractor()! class was used on each clip to create 46,393 spectrograms (Figure~\ref{fig:spec_samples}).
+To create the training samples, a custom pre-processing class \lstinline!SpectrogramExtractor()! was implemented. This class transforms an audio clip into its corresponding spectrogram representation, which stores frequency, amplitude and temporal information in a single sample. By converting the signal into the time-frequency domain, the resulting spectrograms are learnable by a neural network with convolutional layers. The \lstinline!SpectrogramExtractor()! class was used on each clip to create 46,393 spectrograms (Figure~\ref{fig:spec_samples}).\newline
 
-After creating the spectrograms for each sample, the libricss metadata files (Appendix~\ref{app:libricss_metadata}) were scraped to find the speaker count and speaker ID(s) for each spectrogram. The number of speakers was used as the supervision label for each spectrogram in model training. The noise samples were labelled with $\text{Speaker Count} = 0$. The resulting labelled dataset was formatted as a DataFrame (Table~\ref{tab:libricss_labels}).
+\noindent After creating the spectrograms for each sample, the LibriCSS metadata files (Appendix~\ref{app:libricss_metadata}) were scraped to find the speaker count and speaker ID(s) for each spectrogram. The number of speakers was used as the supervision label for each spectrogram in model training. The noise samples were labelled with $\text{Speaker Count} = 0$. The resulting labelled dataset was formatted as a DataFrame (Table~\ref{tab:libricss_labels}).
 
 
 \begin{table}[H]
@@ -126,7 +126,7 @@ After creating the spectrograms for each sample, the libricss metadata files (Ap
 \end{table}
 
 \subsubsection{Evaluating the Dataset}
-Two primary issues were identified in the created dataset. First, it contained only three speaker count classes [0, 1, 2], preventing a model trained on this data from generalising to scenarios involving three or more speakers. Second, the dataset exhibited substantial class imbalance (Table~\ref{tab:samples_pre_aug}), which could have biased model training toward the more frequently occurring classes. To resolve these issues the dataset was augmented.
+The dataset currently contained only three speaker count classes [0, 1, 2], preventing a model trained on this data from generalising to scenarios involving three or more speakers. Additionally, the dataset exhibited substantial class imbalance (Table~\ref{tab:samples_pre_aug}), which could have biased model training toward the more frequently occurring classes. To resolve this the dataset was augmented.
 
 \begin{table}[H]
   \centering
@@ -147,11 +147,15 @@ Two primary issues were identified in the created dataset. First, it contained o
 
 %----------------------------------------------------------
 \subsection{Data Augmentation}
-Data augmentation was employed to address the class imbalance present in the dataset, as well as the lack of samples representing higher speaker counts. Two methods were considered to address the imbalance; increase samples in underrepresented classes or reduce samples in overrepresented classes. The latter meant that valuable information could be lost, so alternative data sources were considered to increase class sizes. To create higher speaker audio, synthetic samples were generated by selecting pairs of clips and combining them. The clips were overlayed and normalised to produce realistic multi-speaker recordings. The spectrograms were extracted from the new clips via the usual process with \lstinline!SpectrogramExtractor()!. Finally, the speaker counts for the synthetic samples were created by summing the counts of the original clips, and the observations were added to the dataset.\newline\newline Clip selection was pseudo-random; clips were separated into groups by their number of speakers first, and pairs were then drawn randomly from two chosen groups. This meant that the number of samples for each class could be curated, and class balance was possible (Table~\ref{tab:augmentation_summary}). Additionally, checks were made using speaker ID to ensure that clips of the same speaker weren't overlayed, as combining two clips of the same voice could be interpreted as a single speaker. It was noticed that if a speaker began talking in the first or last milliseconds of a clip the speech wouldn't be audibly significant, so counting the speech would be inappropriate; a minimum utterance length of $0.2$ seconds was required for labelling, so that insignificant speech couldn't distort the speaker count labels.
+Data augmentation was employed to address the class imbalance present in the dataset, as well as the lack of samples representing higher speaker counts. Two methods were considered to address the imbalance; $a)$ increase samples in underrepresented classes, or $b)$ reduce samples in overrepresented classes. Option $b$ was simpler however valuable information could be lost. Option $a)$ was therefore chosen and alternative data sources were considered to increase class sizes. To create higher speaker audio, synthetic samples were generated by selecting pairs of clips and combining them. The clips were overlayed and normalised to produce realistic multi-speaker recordings. The spectrograms were extracted from the new clips via the usual process with \lstinline!SpectrogramExtractor()!. Finally, the speaker counts for the synthetic samples were created by summing the counts of the original clips, and the observations were added to the dataset.\newline
+
+\noindent Clip selection was pseudo-random; clips were separated into groups by their number of speakers first, and samples were then drawn from two chosen groups to make a pair. This meant that the number of samples for each class could be curated, and class balance was possible (Table~\ref{tab:augmentation_summary}). Additionally, checks were made using speaker ID to ensure that clips of the same speaker weren't overlayed, as combining two clips of the same voice could be interpreted as a single speaker. It was noticed that if a speaker began talking in the first or last milliseconds of a clip the speech wouldn't be audibly significant, so counting the speech would be inappropriate. A minimum utterance length of $0.2$ seconds was set for labelling, so that insignificant speech couldn't distort the speaker count labels. Table~\ref{tab:samples_aug} shows the final class counts after augmentation. \newline
+
+\noindent The final class sizes were curated to reflect both the difficulty of the class to learn and its occurrence in the world. For example, the `0' class, where observations are only silence and noise, was theoretically easier to learn than the higher classes, so less observations were needed. In contrast the `1' speaker class is the most common class in the real-world, so there are more observations for this class than the others. With this in mind, a strategically weighted dataset was created.
 
 \begin{table}[H]
   \centering
-  \caption{Summary of data augmentation for multi-speaker classes. The original dataset was split into `0-speaker', `1-speaker' and `2-speaker' samples. These could then be overlayed to create a clip with any number of speakers; for example, overlaying `2-speaker' clips with `1-speaker' clips produced synthetic `3-speaker' clips.}
+  \caption{Summary of data augmentation for multi-speaker classes. The original dataset was split into `0-speaker', `1-speaker' and `2-speaker' samples. These could then be overlayed to create a clip with any number of speakers.}
   \label{tab:augmentation_summary}
   \begin{tabular}{|c|c|c|c|}
     \hline
@@ -177,7 +181,7 @@ Data augmentation was employed to address the class imbalance present in the dat
 
 \begin{table}[H]
   \centering
-  \caption{Number of samples per speaker count after augmentation. These class sizes were curated to reflect both the difficulty of the class to learn and it's occurrence in the world. For example, the `0' class, where observations are only silence and noise, was theoretically easier to learn than the higher classes, so less observations were needed. In contrast the `1' speaker class is the most common class in the real-world, so there are more observations for this class than the others. With this in mind, a strategically weighted dataset was created.}
+  \caption{Number of samples per speaker count after augmentation.}
   \label{tab:samples_aug}
   \begin{tabular}{|c|c|}
     \hline
@@ -198,12 +202,12 @@ Data augmentation was employed to address the class imbalance present in the dat
 
 \subsubsection{Changes for the Voice Activity Detection (VAD) task}
 \label{sec:vad_labels}
-Due to the binary nature of the VAD task the speaker labels needed to be altered (Table~\ref{tab:VAD_data_change}).
+For the VAD task speaker labels needed to be altered (Table~\ref{tab:VAD_data_change}). VAD is a binary classification task so only two classes, `speech' (1) and `no speech' (0) are required.
 
-\begin{table}
-\label{tab:VAD_data_change}
+\begin{table}[H]
 \centering
 \caption{A comparison of the label structure for the Speaker Counting model and the Voice Activity Detection (VAD) model.}
+\label{tab:VAD_data_change}
 \begin{tabular}{|c|c|c|}
 \hline
 \textbf{Number of Speakers} & \textbf{Speaker Count Label} & \textbf{VAD Label} \\
@@ -226,14 +230,13 @@ Due to the binary nature of the VAD task the speaker labels needed to be altered
 
 %----------------------------------------------------------
 \section{Model Architecture}
-An artificial neural network with convolutional layers was employed to extract feature maps from the spectrogram inputs. Convolutional layers efficiently captured local patterns in both time and frequency, making them well-suited for processing audio representations. Long Short-Term Memory (LSTM) and transformer-based architectures were considered, but were deemed less suitable due to higher computational cost and slower inference; convolutional neural networks (CNNs) achieved efficient feature extraction with substantially lower overhead, making them a suitable choice for real-time inference.
+Artificial neural networks with convolutional layers were employed to extract feature maps from the spectrogram inputs. Convolutional layers efficiently captured local patterns in both time and frequency, making them well-suited for processing audio representations. Long Short-Term Memory (LSTM) and transformer-based architectures were considered, but were deemed less suitable due to higher computational cost and slower inference; convolutional neural networks (CNNs) achieved efficient feature extraction with substantially lower overhead, making them a suitable choice for real-time inference.
 
 \subsection{Architecture for the Voice Activity Detection (VAD) model}
 Voice Activity Detection (VAD) was implemented using a compact CNN, designed to classify short audio segments as either speech or non-speech (Figure \ref{fig:vad_model_tikz}). The network consists of two convolutional layers, with max-pooling applied after each to reduce spatial dimensions. Dropout was required to mitigate overfitting. The fully connected layers map the extracted features to the two output classes. The size is intentionally small for efficient inference; modern CNNs are usually much more complex and are larger in size \cite{modelsizes}. A detailed model architecture can be found in Appendix~\ref{app:VAD_arc}.
 
 % VAD tikz
 \begin{figure}[H]
-\label{fig:VAD_tikz}
 \centering
 
 \begin{tikzpicture}[scale=0.8, every node/.style={scale=0.9}, node distance=0.4cm]
@@ -341,12 +344,11 @@ $
 
 
 \subsection{Architecture for the Speaker Count Model}
-Speaker counting was implemented using a multi-class CNN, enabling the model to predict the number of concurrent speakers in an audio segment. Given the increased complexity of distinguishing multiple overlapping speakers compared to voice activity detection, a more complex architecture was required (Figure~\ref{fig:Count_tikz}). Four convolutional layers were employed to extract increasingly abstract features and each fully-connected layer had 128 neurons (twice that of the VAD model). The network otherwise maintained a structure similar to the VAD model; a detailed model architecture can be found in Appendix~\ref{app:SC_arc}.
+Speaker counting was implemented using a multi-class CNN, enabling the model to predict the number of concurrent speakers in an audio segment. Given the increased complexity of distinguishing multiple overlapping speakers compared to voice activity detection, a more complex architecture was required (Figure~\ref{fig:count_model_tikz}). Four convolutional layers were employed to extract increasingly abstract features and each fully-connected layer had 128 neurons (twice that of the VAD model). The network otherwise maintained a structure similar to the VAD model; a detailed model architecture can be found in Appendix~\ref{app:SC_arc}.
 
 
 % Count tikz
 \begin{figure}[H]
-\label{fig:Count_tikz}
 \centering
 
 \begin{tikzpicture}[scale=0.8, every node/.style={scale=0.9}, node distance=0.4cm]
@@ -449,7 +451,6 @@ $
 
 \draw[->] ([xshift=0.25cm]fc2_3.east) -- (output.west);
 \end{tikzpicture}
-
 \caption{CNN architecture for the speaker count model. An input spectrogram is fed through four convolutional layers with $3\times3$ kernels, applying $2\times2$ max pooling after each. In comparison to Figure~\ref{fig:vad_model_tikz} the resulting feature maps are much smaller in spatial resolution but richer in representational detail. The feature maps are flattened into a column vector $z$ and learned by two fully-connected layers with $n=128$ nodes each. The output is a multi-class classification of how many distinct speakers are present in the audio.}
 \label{fig:count_model_tikz}
 \end{figure}
@@ -457,7 +458,7 @@ $
 %----------------------------------------------------------
 \section{Hyperparameter Tuning with Optuna} 
 \label{sec:Optuna}
-Each CNN architecture required careful hyperparameter (HP) selection to maximise precision in evaluation. Initial exploration was done via random search, where categorical values were drawn from a defined grid of candidate parameters (Table~\ref{tab:hparam_space}). Random search was successful in identifying promising regions of the hyperparameter space, but expectedly struggled beyond that due to high compute over a very large search space. Grid search was then considered as it could cover the entire search space, but was too slow and expensive to be practical.
+Each CNN architecture required careful hyperparameter (HP) selection to maximise precision in evaluation. Initial exploration was done via random search, where categorical values were drawn from a defined grid of candidate parameters (Table~\ref{tab:hparam_space}). Random search was successful in identifying promising regions of the hyperparameter space, but expectedly struggled beyond that due to high compute over a very large search space. Grid search was considered, which would cover the entire search space one configuration at a time, but was too slow and expensive to be practical.
 
 
 \begin{table}[H]
@@ -479,15 +480,15 @@ Conv4 output channels & \{32, 64, 128\} \\
 \label{tab:hparam_space}
 \end{table}
 
-To improve HP search efficiency, the Optuna package \cite{optuna_2019} was employed. Optuna contains wrappers to easily perform a guided random search with the ability to prune poor-performing trials early, reducing wasted computation. Each trial sampled a configuration of hyperparameters (Table~\ref{tab:optuna_space}) and trained a model for up to three epochs. Validation accuracy was monitored after each epoch, and trials that would not outperform the current best were terminated. A stratified subset of the dataset was used during tuning to  reduce runtime while preserving class balance. The subset contained 25\% of the total dataset making runtime $\sim4\times$ faster. In total, 150 trials were run, covering a substantial portion of the 324 possible configurations, which was sufficient to identify a near-optimal configuration.  
+To improve HP search efficiency, Optuna \cite{optuna_2019} was employed, an efficient HP tuning framework. Optuna observes performance during training and can stop poor performing configurations early, reducing wasted computation. Each trial sampled a configuration of hyperparameters (Table~\ref{tab:optuna_space}) and trained a model for up to three epochs. Validation accuracy was monitored after each epoch, and trials that were unlikely to outperform the current best were terminated. A stratified subset of the dataset was used during tuning to further reduce runtime while preserving class balance. The subset contained 25\% of the total dataset making runtime $\sim4\times$ faster. In total, 150 trials were run, covering a substantial portion of the 324 possible configurations, which was sufficient to identify a near-optimal configuration.  \newline
 
-Training used the Adam optimiser with cross-entropy loss. Adam was chosen for its robustness in handling sparse gradients and its ability to adapt learning rates per parameter, making it well suited to CNNs trained on audio spectrogram data \cite{adam}. Cross-entropy was selected as the objective function because the tasks under study were classification problems. Together, these choices provided stable convergence and compatibility with the Optuna optimisation framework.
+\noindent Training used the Adam optimiser with cross-entropy loss. Adam was chosen for its robustness in handling sparse gradients and its ability to adapt learning rates per parameter, making it well suited to CNNs trained on audio spectrogram data \cite{adam}. Cross-Entropy was selected as the objective function because the tasks under study were classification problems. Together, these choices provided stable convergence and compatibility with the Optuna optimisation framework.
 
 
 \begin{table}[H]
-\label{tab:optuna_search_space}
 \centering
 \caption{Hyperparameter search space explored by Optuna for the Speaker Count model. The space was informed by the previous random search, for example setting fully-connected layer size of $128$, as it was a strong performer in the random search. There were 324 total possible configurations, but it wasn't deemed necessary to try all configurations; most configurations provided insignificant changes, and a near-optimal configuration was considered sufficient.}
+\label{tab:optuna_search_space}
 \begin{tabular}{ll}
 \hline
 Hyperparameter & Candidate values \\
@@ -507,4 +508,4 @@ Conv4 output channels & \{32, 64, 128\} \\
 
 %----------------------------------------------------------
 \section{Real-Time Evaluation with Streamlit}
-After training, both the Voice Activity Detection and Speaker Count models were deployed in lightweight real-time applications. Each application was implemented using the Streamlit library \cite{streamlit}, which provided a straightforward way to combine live microphone input, model inference, and interactive visualisation in a single interface. In both cases the process was identical; the trained model was loaded with its saved weights and connected to a preprocessing pipeline. The preprocessing module resampled audio captured from the system microphone to 16 kHz, segmented it into fixed one-second windows, and converted each segment into spectrograms suitable for model input. \newline\newline Streaming audio capture was managed by the sounddevice library \cite{sounddevice}. One-second clips were placed into a queue and processed continuously by a background thread, which applied preprocessing and forwarded the results to the model for inference. Predictions were stored in a rolling buffer, enabling real-time display and short-term history tracking. This allowed the models to be tested under realistic streaming conditions. Because both applications shared the same architecture, only differing in the loaded model and output interpretation, the methodology was consistent. Streamlit was chosen to minimise development overhead and make results accessible without requiring a separate deployment framework.
+After training, both the Voice Activity Detection and Speaker Count models were deployed in lightweight real-time applications. Each application was implemented using the Streamlit framework \cite{streamlit}, which provided a straightforward way to combine live microphone input, model inference, and interactive visualisation in a single interface. In both cases the process was identical; the trained model was loaded with its saved weights and connected to a preprocessing pipeline. The preprocessing module resampled audio captured from the system microphone to 16 kHz, segmented it into fixed one-second windows, and converted each segment into spectrograms suitable for model input. \newline\newline Streaming audio capture was managed by the sounddevice library \cite{sounddevice}. One-second clips were placed into a queue and processed continuously by a background thread, which applied preprocessing and forwarded the results to the model for inference. Predictions were stored in a rolling buffer, enabling real-time display and short-term history tracking. This allowed the models to be tested under realistic streaming conditions. The methodology was consistent between the two models. Streamlit was chosen to minimise development overhead and make results accessible without requiring a separate deployment framework.

@@ -14,7 +14,7 @@ from model import ConvCount, config
 
 
 # ===== Load Model =====
-MODEL_PATH = r"src\model\ConvCount_full.pt" 
+MODEL_PATH = r"src\model\ConvCount_5_OptunaResults_F1_234.pt" 
 model = ConvCount(**config)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model.load_state_dict(torch.load(MODEL_PATH, map_location=device))

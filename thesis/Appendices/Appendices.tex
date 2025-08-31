@@ -110,6 +110,16 @@
 \centering
 \begin{verbatim}
 cxb1114/
+|-- app/
+|   |-- MacOS/
+|   |   |-- run_VAD.sh
+|   |   `-- run_Count.sh
+|   |
+|   |-- Win/
+|   |   |-- run_VAD.bat
+|   |   `-- run_Count.bat
+|   |
+|
 |-- data/
 |   |-- data.wav
 |   `-- ...
@@ -123,22 +133,24 @@ cxb1114/
 |   `-- Visuals.ipynb
 |
 |-- src/
-|   |-- app.py
+|   |-- app_Count.py
 |   |-- app_VAD.py
 |   |-- data.py
 |   |-- model.py
-|   |-- predict.py
 |   |
 |   |-- utils/
 |   |   |-- helpers.py
-|   |   `-- SpectrogramExtractor.py
+|   |   |-- SpectrogramExtractor.py
+|   |   `-- predict.py
 |   |
 |   `-- model/
-|       `-- models.pt
-|       `-- ...
+|       |-- ConvCount_5_OptunaResults_F1_234.pt
+|       |-- ConvCount_full.pt
+|       |-- ConvCount_postVAD.pt
+|       `-- ConvCount_VAD.pt
 |
 |-- thesis/
-|   `-- dissertation.pdf
+|   `-- Dissertation.pdf
 |
 |-- demo.pptx
 `-- requirements.txt

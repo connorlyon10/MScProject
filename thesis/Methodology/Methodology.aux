@@ -16,7 +16,7 @@
 \newlabel{tab:datacollection}{{3.3}{6}{}{table.3.3}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {3.2}Data Pre-Processing}{6}{}\protected@file@percent }
 \newlabel{sec:data_preproc}{{3.2}{6}{}{section.3.2}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces A series of spectrograms created with the \lstinline !SpectrogramExtractor()! class on speech audio. Speaker count was found by manually cross-referencing the audio metadata. It's clear that spectral activity increases with speaker count. With a low number of speakers ($n = 1, 2$) the spectral patterns of each speaker are visible, whereas the result becomes increasingly obscure and noisy as speaker count increases. This suggests that learnability diverges as $n$ increases.}}{7}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces A series of spectrograms created with the \lstinline !SpectrogramExtractor()! class on speech audio. Speaker count was found by manually cross-referencing the audio's source metadata (Appendix \ref {app:libricss_metadata}). Spectral activity appears to increase with speaker count. With a low number of speakers ($n = 1, 2$) the spectral patterns of each speaker are visible, including higher multiple harmonics, whereas the result becomes increasingly obscure and noisy as speaker count increases. This suggests that learnability diverges as $n$ increases.}}{7}{}\protected@file@percent }
 \newlabel{fig:spec_samples}{{3.1}{7}{}{figure.3.1}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {3.4}{\ignorespaces An extract of the resulting dataset from using the LibriCSS metadata (Appendix~\ref {app:libricss_metadata}) to find the number of speakers for each observation.}}{8}{}\protected@file@percent }
 \newlabel{tab:libricss_labels}{{3.4}{8}{}{table.3.4}{}}
@@ -25,21 +25,19 @@
 \newlabel{tab:samples_pre_aug}{{3.5}{8}{}{table.3.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}Data Augmentation}{8}{}\protected@file@percent }
 \citation{modelsizes}
-\newlabel{tab:VAD_data_change}{{3.2.1}{9}{}{table.3.7}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3.8}{\ignorespaces A comparison of the label structure for the Speaker Counting model and the Voice Activity Detection (VAD) model.}}{9}{}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {3.6}{\ignorespaces Summary of data augmentation for multi-speaker classes. The original dataset was split into `0-speaker', `1-speaker' and `2-speaker' samples. These could then be overlayed to create a clip with any number of speakers; for example, overlaying `2-speaker' clips with `1-speaker' clips produced synthetic `3-speaker' clips.}}{9}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3.6}{\ignorespaces Summary of data augmentation for multi-speaker classes. The original dataset was split into `0-speaker', `1-speaker' and `2-speaker' samples. These could then be overlayed to create a clip with any number of speakers.}}{9}{}\protected@file@percent }
 \newlabel{tab:augmentation_summary}{{3.6}{9}{}{table.3.6}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3.7}{\ignorespaces Number of samples per speaker count after augmentation. These class sizes were curated to reflect both the difficulty of the class to learn and it's occurrence in the world. For example, the `0' class, where observations are only silence and noise, was theoretically easier to learn than the higher classes, so less observations were needed. In contrast the `1' speaker class is the most common class in the real-world, so there are more observations for this class than the others. With this in mind, a strategically weighted dataset was created.}}{9}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3.7}{\ignorespaces Number of samples per speaker count after augmentation.}}{9}{}\protected@file@percent }
 \newlabel{tab:samples_aug}{{3.7}{9}{}{table.3.7}{}}
 \@writefile{toc}{\contentsline {subsubsection}{Changes for the Voice Activity Detection (VAD) task}{9}{}\protected@file@percent }
 \newlabel{sec:vad_labels}{{3.2.1}{9}{}{table.3.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.8}{\ignorespaces A comparison of the label structure for the Speaker Counting model and the Voice Activity Detection (VAD) model.}}{9}{}\protected@file@percent }
+\newlabel{tab:VAD_data_change}{{3.8}{9}{}{table.3.8}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {3.3}Model Architecture}{9}{}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}Architecture for the Voice Activity Detection (VAD) model}{9}{}\protected@file@percent }
-\newlabel{fig:VAD_tikz}{{3.3.1}{10}{}{subsection.3.3.1}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces CNN architecture for the VAD model. An input spectrogram is fed through two convolutional layers with $3\times 3$ kernels, applying $2\times 2$ max pooling after each. This provides a series of `feature maps' that represent the various features of the original image. These feature maps are flattened into a column vector, $z$, and learned by two fully connected layers with $n=64$ nodes each. The output is a binary classification; `0' for no speech, `1' for speech.}}{10}{}\protected@file@percent }
 \newlabel{fig:vad_model_tikz}{{3.2}{10}{}{figure.3.2}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}Architecture for the Speaker Count Model}{10}{}\protected@file@percent }
-\newlabel{fig:Count_tikz}{{3.3.2}{10}{}{subsection.3.3.2}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces CNN architecture for the speaker count model. An input spectrogram is fed through four convolutional layers with $3\times 3$ kernels, applying $2\times 2$ max pooling after each. In comparison to Figure~\ref {fig:vad_model_tikz} the resulting feature maps are much smaller in spatial resolution but richer in representational detail. The feature maps are flattened into a column vector $z$ and learned by two fully-connected layers with $n=128$ nodes each. The output is a multi-class classification of how many distinct speakers are present in the audio.}}{10}{}\protected@file@percent }
 \newlabel{fig:count_model_tikz}{{3.3}{10}{}{figure.3.3}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {3.4}Hyperparameter Tuning with Optuna}{10}{}\protected@file@percent }
@@ -50,12 +48,12 @@
 \citation{sounddevice}
 \@writefile{lot}{\contentsline {table}{\numberline {3.9}{\ignorespaces HP search space for the Speaker Count model's random search. These values were drawn from intuition and intentionally cover a very large parameter space.}}{11}{}\protected@file@percent }
 \newlabel{tab:hparam_space}{{3.9}{11}{}{table.3.9}{}}
-\newlabel{tab:optuna_search_space}{{3.4}{11}{}{table.3.9}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {3.10}{\ignorespaces Hyperparameter search space explored by Optuna for the Speaker Count model. The space was informed by the previous random search, for example setting fully-connected layer size of $128$, as it was a strong performer in the random search. There were 324 total possible configurations, but it wasn't deemed necessary to try all configurations; most configurations provided insignificant changes, and a near-optimal configuration was considered sufficient.}}{11}{}\protected@file@percent }
+\newlabel{tab:optuna_search_space}{{3.10}{11}{}{table.3.10}{}}
 \newlabel{tab:optuna_space}{{3.10}{11}{}{table.3.10}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {3.5}Real-Time Evaluation with Streamlit}{11}{}\protected@file@percent }
 \@setckpt{Methodology/Methodology}{
-\setcounter{page}{12}
+\setcounter{page}{13}
 \setcounter{equation}{0}
 \setcounter{enumi}{0}
 \setcounter{enumii}{0}
@@ -85,7 +83,7 @@
 \setcounter{lotdepth}{1}
 \setcounter{FancyVerbLine}{0}
 \setcounter{linenumber}{1}
-\setcounter{LN@truepage}{19}
+\setcounter{LN@truepage}{18}
 \setcounter{FancyVerbWriteLine}{0}
 \setcounter{FancyVerbBufferLine}{0}
 \setcounter{FV@TrueTabGroupLevel}{0}

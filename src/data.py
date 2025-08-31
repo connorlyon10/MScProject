@@ -1,16 +1,6 @@
 """data.py
 
-Dataset and helpers for speaker-count spectrograms.
-
-Usage
------
-- Import in training/inference scripts:
-
-    from src.model.data import SpectrogramDataset, save_checkpoint, load_checkpoint
-
-- Run as a script to build a dataset and dump the label mapping:
-
-    python data.py
+Dataset class for collecting spectrograms.
 
 """
 

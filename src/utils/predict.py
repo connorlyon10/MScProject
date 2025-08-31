@@ -103,12 +103,3 @@ def load_spectrogram(path):
     return tensor
 
 # endregion
-
-
-# if running as script:
-
-# if __name__ == "__main__":
-#     model = load_model("src/model/SpeakerCountCNN_v0.01.pt")
-#     path = "data/spectrograms/0L_session0_clip3.pt"
-#     result = predict(model, path)
-#     print(f"Predicted class: {result}")
