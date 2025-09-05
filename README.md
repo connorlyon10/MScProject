@@ -1,11 +1,10 @@
 # Speech Processing in Real-Time with CNNs
 
 ## Overview
-This project is for my MSc Data Science final project. The project has resulted in machine learning models which can predict whether or not speech is present in audio, and the number of speakers present in speech.
+This repo contains the source code and pdf my MSc Data Science dissertation project, **Speech Processing in Real-Time with Convolutional Neural Networks**. The project was a module of study for The University of Birmingham 2024-2025. The project successfully solved speech processing tasks by creating lightweight CNNs that can make inference in real-time. These CNNs are in contrast to current SOTA solutions (at time of writing) which are much larger and can't make accurate inference outside of their development environments.
 
-This README contains the structure for the repo and basic set-up tips for running the models.
 
-## Setting up the virtual environment (venv)
+## Set-Up
 
 1. Download and install **Python 3.9.13** from the official website: https://www.python.org/downloads/release/python-3913/
 
